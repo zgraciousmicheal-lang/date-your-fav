@@ -1,207 +1,387 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-    <title>Date Your Fav — Premium Zimbabwe</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <style>
-        :root{
-            --gold: #d4af37; --dark: #0a0e14; --light: #eef2f6; 
-            --accent: #161b22; --muted: #8b949e; --whatsapp: #25d366;
-            --verify: #3897f0;
-        }
-        body { font-family: 'Inter', sans-serif; background-color: var(--dark); color: var(--light); margin: 0; }
-        .app { width:100%; max-width:1100px; margin:0 auto; display:grid; grid-template-rows: auto 1fr auto; min-height:100vh; }
-        
-        /* Header */
-        .topbar{ display:flex; align-items:center; justify-content:space-between; padding:20px; border-bottom:1px solid rgba(255,255,255,0.05); background:#0d1117; }
-        .logo-area { display:flex; align-items:center; gap:12px; }
-        .logo{ width:40px; height:40px; border-radius:8px; background: var(--gold); display:flex; align-items:center; justify-content:center; color: #000; font-weight:800; cursor: pointer; }
-        
-        /* Layout */
-        .content { display:grid; grid-template-columns: 1fr 380px; gap:25px; padding:20px; }
-        @media (max-width:900px){ .content { grid-template-columns: 1fr; } }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Date Your Fav — App (Refactored)</title>
 
-        /* Profiles */
-        .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:20px; }
-        .card { background: var(--accent); border-radius:20px; overflow:hidden; border:1px solid rgba(255,255,255,0.05); position: relative; transition:0.3s; }
-        .card:hover { border-color: var(--gold); transform: translateY(-3px); }
-        .media{ height:260px; background:#000; position:relative; }
-        .media img{ width:100%; height:100%; object-fit:cover; }
-        .verify-badge { position:absolute; top:12px; right:12px; background:white; color:var(--verify); border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold; border:1px solid var(--verify); }
-        
-        .body{ padding:18px; }
-        .name{ color:var(--gold); font-family:"Playfair Display"; font-size:1.2rem; margin:0; display:flex; align-items:center; gap:5px;}
-        .meta-text { color:var(--muted); font-size:0.85rem; margin:5px 0; }
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
-        /* Form & Panels */
-        .panel{ background: rgba(255,255,255,0.02); border-radius:24px; padding:24px; border:1px solid rgba(255,255,255,0.05); position: sticky; top: 20px; }
-        .safety-box { background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--gold); padding:15px; border-radius:15px; margin-bottom:20px; font-size:0.8rem; }
-        
-        input, select, textarea { width:100%; padding:14px; margin-top:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); background:#0a0e14; color:#fff; box-sizing: border-box; }
-        .btn { width:100%; padding:16px; margin-top:15px; border-radius:12px; background: var(--gold); border:none; color:#000; font-weight:800; cursor:pointer; text-transform:uppercase; letter-spacing:1px; }
+  <style>
+    :root{
+      --accent1:#ff7a59;
+      --accent2:#ffd166;
+      --bg1:#0f1724;
+      --muted:#9aa4b2;
+      --glass:rgba(255,255,255,0.03);
+      --card:rgba(255,255,255,0.02);
+      --radius:18px;
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+      --max-width:980px;
+    }
 
-        /* Admin UI */
-        #admin-panel { display:none; background: #1a1a1a; padding: 15px; margin-bottom: 20px; border-radius: 10px; border: 1px solid var(--gold); }
-        .admin-only { display: none; margin-top: 10px; }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;color:#eef2f6;background:linear-gradient(180deg,#070708,#0b0b0c);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    /* App shell uses CSS Grid to avoid layout shift */
+    .app {
+      width:100%;
+      max-width:var(--max-width);
+      height:calc(100vh - 40px);
+      margin:20px auto;
+      border-radius:24px;
+      overflow:hidden;
+      display:grid;
+      grid-template-rows: auto 1fr auto; /* header, content, footer */
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 20px 60px rgba(2,6,23,0.7);
+    }
 
-        /* WA */
-        .wa-float { position: fixed; bottom: 30px; right: 30px; background: var(--whatsapp); color: white; width: 60px; height: 60px; border-radius: 50px; display: flex; align-items: center; justify-content: center; text-decoration: none; z-index: 100; box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3); }
-        
-        #preview-container { margin-top: 12px; width: 100%; height: 180px; border-radius: 12px; border: 2px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; overflow:hidden; }
-    </style>
+    /* Header */
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:calc(12px + var(--safe-top)) 18px 12px 18px;
+      border-bottom:1px solid rgba(255,255,255,0.02);
+      background: linear-gradient(90deg, rgba(255,255,255,0.01), transparent);
+    }
+    .logo{ width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg,var(--accent1),var(--accent2)); display:flex; align-items:center; justify-content:center; color:#08101a; font-weight:800; font-family:"Playfair Display", serif; }
+    .title{ font-family:"Playfair Display", serif; color:var(--accent2); letter-spacing:1px; font-size:1.05rem; }
+
+    /* Content area uses CSS Grid for two-column layout */
+    .content {
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:18px;
+      padding:18px;
+      overflow:hidden;
+    }
+    @media (max-width:980px){
+      .content { grid-template-columns: 1fr; }
+    }
+
+    .left { overflow:auto; padding-right:6px; }
+    .right { overflow:auto; }
+
+    /* Cards grid */
+    .grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap:14px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+      transition: transform .22s ease, box-shadow .22s ease;
+      cursor:pointer;
+      display:flex;
+      flex-direction:column;
+      min-height:300px;
+    }
+    .card:hover{ transform: translateY(-8px); box-shadow: 0 30px 60px rgba(2,6,23,0.6); }
+    .media{ height:170px; overflow:hidden; background:linear-gradient(120deg, rgba(255,122,89,0.04), rgba(255,209,102,0.03)); }
+    .media img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .6s ease; }
+    .card:hover .media img{ transform: scale(1.06); }
+    .body{ padding:12px; display:flex; flex-direction:column; gap:6px; }
+    .name{ font-family:"Playfair Display", serif; color:var(--accent2); font-size:1.02rem; margin:0; }
+    .meta{ color:var(--muted); font-size:0.9rem; margin:0; }
+    .submeta{ color:var(--muted); font-size:0.85rem; margin-top:6px; }
+
+    /* Right column panels */
+    .panel{ background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01)); border-radius:14px; padding:14px; border:1px solid rgba(255,255,255,0.03); }
+
+    .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    @media (max-width:600px){ .form-grid{ grid-template-columns:1fr } }
+
+    input[type="text"], input[type="email"], input[type="number"], select, textarea, input[type="file"]{
+      width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:#fff; outline:none;
+    }
+    textarea{ min-height:100px; resize:vertical; }
+
+    /* FAB positioned within grid (no absolute bottom) */
+    .fab {
+      align-self:end; /* place in footer row visually when needed */
+      justify-self:end;
+      margin: 0 20px calc(72px + var(--safe-bottom)) 0; /* safe spacing from bottom nav */
+      width:64px; height:64px; border-radius:20px;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex; align-items:center; justify-content:center; color:#08101a; font-weight:800; border:none; cursor:pointer; z-index:20;
+      box-shadow: 0 18px 40px rgba(255,122,89,0.18);
+    }
+
+    /* Footer / bottom nav is part of the grid (third row) and uses sticky behavior inside the app */
+    .footer {
+      border-top:1px solid rgba(255,255,255,0.02);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      padding:10px 18px calc(10px + var(--safe-bottom));
+      display:flex;
+      gap:12px;
+      justify-content:space-around;
+      align-items:center;
+    }
+
+    .nav-item{ display:flex; flex-direction:column; align-items:center; gap:6px; color:var(--muted); font-size:0.82rem; text-decoration:none; }
+    .nav-item.active{ color:var(--accent2); font-weight:700; }
+
+    /* Modal (full-screen overlay) */
+    .modal-backdrop{ position:fixed; inset:0; background:rgba(2,6,23,0.8); display:none; align-items:center; justify-content:center; z-index:90; padding:20px; }
+    .modal{ width:100%; max-width:920px; height:90vh; border-radius:18px; overflow:hidden; display:flex; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); }
+    .modal-left{ flex:1; overflow:hidden; }
+    .modal-left .img{ width:100%; height:100%; background-size:cover; background-position:center; }
+    .modal-right{ width:420px; padding:18px; display:flex; flex-direction:column; gap:12px; }
+    .modal-title{ font-family:"Playfair Display", serif; color:var(--accent2); font-size:1.3rem; margin:0; }
+    .modal-meta{ color:var(--muted); margin:0; }
+    .modal-bio{ color:#fff; font-size:0.95rem; white-space:pre-wrap; }
+
+    /* small screens adjustments */
+    @media (max-width:900px){
+      .right{ display:none; }
+      .app{ height:100vh; border-radius:0; }
+      .fab{ margin-right:16px; margin-bottom: calc(86px + var(--safe-bottom)); }
+    }
+  </style>
 </head>
 <body>
-
-<div class="app">
+  <div class="app" role="application" aria-label="Date Your Fav app">
+    <!-- Header -->
     <header class="topbar">
-        <div class="logo-area">
-            <div class="logo" onclick="adminLogin()">DYF</div>
-            <div>
-                <div style="color:var(--gold); font-weight:700; font-size:1.1rem; font-family:'Playfair Display'">Date Your Fav</div>
-                <div style="font-size:0.6rem; color:var(--muted); text-transform:uppercase; letter-spacing:2px">Zimbabwe Elite</div>
-            </div>
-        </div>
-        <div style="font-size:0.8rem; color:var(--gold)">● 12 Active Now</div>
+      <div class="logo">DYF</div>
+      <div class="title">Date Your Fav</div>
+      <div style="margin-left:auto" aria-hidden></div>
     </header>
 
-    <main class="content">
-        <section>
-            <div class="safety-box">
-                <strong style="color:var(--gold)">🛡️ Safety First:</strong> Never send money to anyone you meet online. Always meet in a public place for your first date.
+    <!-- Content (two-column grid) -->
+    <main class="content" role="main">
+      <section class="left" aria-labelledby="featuredTitle">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div>
+            <div id="featuredTitle" style="font-weight:700;color:var(--accent2)">Featured</div>
+            <div class="muted">Handpicked profiles curated by the creator</div>
+          </div>
+          <div class="muted">2026</div>
+        </div>
+
+        <div id="grid" class="grid" aria-live="polite">
+          <!-- Cards injected by JS -->
+        </div>
+      </section>
+
+      <aside class="right" aria-labelledby="applyTitle">
+        <div class="panel">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div id="applyTitle" style="font-weight:700;color:var(--accent2)">Apply for Feature</div>
+              <div class="muted">Creator helps with presentation</div>
+            </div>
+            <div class="muted">Fast review</div>
+          </div>
+
+          <form id="applyForm" style="margin-top:12px" enctype="multipart/form-data">
+            <div class="form-grid">
+              <input name="name" placeholder="Full name" required>
+              <input name="email" type="email" placeholder="Email" required>
+              <select name="gender" required>
+                <option value="">Gender</option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option>
+              </select>
+              <input name="age" type="number" min="18" placeholder="Age" required>
             </div>
 
-            <h2 style="font-family:'Playfair Display'; color:var(--gold); margin-bottom:20px;">Featured Profiles</h2>
-            <div id="grid" class="grid">
-                </div>
-        </section>
-
-        <aside>
-            <div id="admin-panel">
-                <h4 style="margin:0; color:var(--gold)">Admin Dashboard</h4>
-                <button onclick="copyCurrentCode()" class="btn" style="padding:8px; font-size:0.7rem; background:#fff">Copy Code for GitHub</button>
+            <div style="margin-top:10px">
+              <select name="seeking_type" required style="width:100%;padding:10px;border-radius:10px">
+                <option value="">Seeking</option><option>Long-term</option><option>Casual</option><option>Friendship</option>
+              </select>
             </div>
 
-            <div class="panel">
-                <h3 id="form-title" style="color:var(--gold); margin:0; font-family:'Playfair Display'">Join the Elite</h3>
-                <p style="font-size:0.8rem; color:var(--muted)">Profiles are hidden until manually verified by our team.</p>
-                
-                <form id="applyForm" action="https://formspree.io/f/xbdajewj" method="POST">
-                    <input name="Name" id="reg-name" placeholder="Full Name & Age" required>
-                    <input name="Location" id="reg-loc" placeholder="Location (e.g. Bulawayo)" required>
-                    
-                    <div id="preview-container"><span id="preview-text" style="color:var(--muted)">Tap to Upload Photo</span></div>
-                    <input type="file" id="fileInput" accept="image/*" style="border:none; padding:5px; font-size:0.7rem">
-                    
-                    <textarea name="Bio" id="reg-bio" placeholder="Tell us about yourself..." rows="4" required></textarea>
-                    
-                    <div style="margin-top:15px; font-size:0.7rem; color:var(--muted)">
-                        By clicking submit, you confirm you are 18+ and agree to our community standards.
-                    </div>
-                    
-                    <button type="submit" class="btn" id="submitBtn">Send Application</button>
-                </form>
+            <div style="margin-top:10px">
+              <input name="desired_age_range" placeholder="Desired age range e.g. 20-30" style="width:100%;padding:10px;border-radius:10px">
             </div>
-        </aside>
+
+            <!-- New: Nationality field -->
+            <div style="margin-top:10px">
+              <label style="display:block;margin-bottom:6px;color:var(--muted);font-size:0.85rem">Nationality</label>
+              <input name="nationality" type="text" placeholder="e.g. Zimbabwe" style="width:100%;padding:10px;border-radius:10px">
+            </div>
+
+            <div style="margin-top:10px">
+              <label style="font-size:0.85rem;color:var(--muted);display:block;margin-bottom:6px">Profile photo</label>
+              <div id="preview" style="height:120px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.02));display:flex;align-items:center;justify-content:center;color:var(--muted);border:1px dashed rgba(255,255,255,0.03)">No image selected</div>
+              <input id="photo" name="photo" type="file" accept="image/*" style="margin-top:8px">
+            </div>
+
+            <div style="margin-top:10px">
+              <textarea name="bio" placeholder="Tell us your story" style="width:100%;padding:10px;border-radius:10px"></textarea>
+            </div>
+
+            <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+              <input id="consent" name="post_on_site" type="checkbox" value="yes" required>
+              <label for="consent" style="color:#fff">I consent to have my profile posted</label>
+            </div>
+
+            <button class="btn" type="submit" style="margin-top:12px;padding:12px;border-radius:10px;background:linear-gradient(90deg,var(--accent1),var(--accent2));border:none;color:#08101a;font-weight:800">Submit to Creator</button>
+          </form>
+        </div>
+
+        <div class="panel" style="margin-top:12px">
+          <div style="font-weight:700;color:var(--accent2)">Contact</div>
+          <div class="muted">Creator</div>
+          <div style="font-weight:700">gmz200t@gmail.com</div>
+          <a href="https://wa.me/263785008695" style="display:inline-block;margin-top:8px;padding:8px 12px;border-radius:999px;background:#25D366;color:#fff;text-decoration:none">WhatsApp 0785008695</a>
+        </div>
+      </aside>
     </main>
 
-    <footer style="text-align:center; padding:60px 20px; color:var(--muted); font-size:0.75rem; border-top:1px solid rgba(255,255,255,0.05)">
-        <p>&copy; 2024 Date Your Fav Zimbabwe. All Rights Reserved.</p>
-        <p>Inquiries: <a href="mailto:gmz200t@gmail.com" style="color:var(--gold)">gmz200t@gmail.com</a> | WhatsApp: +263 77 500 8695</p>
-        <p style="margin-top:20px; opacity:0.5">Strictly 18+. We do not tolerate illegal activity.</p>
+    <!-- Footer row (part of grid) — stable, no absolute positioning -->
+    <footer class="footer" role="contentinfo" aria-label="Main navigation">
+      <a class="nav-item active" href="#" data-nav="browse" aria-pressed="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>Browse</span>
+      </a>
+      <a class="nav-item" href="#" data-nav="apply" aria-pressed="false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>Apply</span>
+      </a>
+      <a class="nav-item" href="#" data-nav="profile" aria-pressed="false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><circle cx="12" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M5 20c1.5-4 6-6 7-6s5.5 2 7 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>Profile</span>
+      </a>
     </footer>
-</div>
 
-<a href="https://wa.me/263775008695" class="wa-float" target="_blank">
-    <svg style="width:28px;height:28px" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.5 2 2 6.5 2 12.04c0 1.84.5 3.55 1.36 5.04L2.05 22l5.09-1.33c1.44.78 3.08 1.22 4.9 1.22 5.54 0 10.04-4.5 10.04-10.04C22.08 6.5 17.58 2 12.04 2m-1.1 14.91c-1.59 0-3.11-.81-4-2.12l.08-.13c.1-.17.2-.33.3-.5.1-.17.2-.33.3-.5l.08-.13c1.1 1.79 3.51 2.22 5.16.92.05-.04.1-.08.14-.12l.13-.1c.17-.13.33-.26.5-.4.17-.13.33-.26.5-.4l.13-.1c1.3 1.63.87 4.04-1 5-.43.23-.9.35-1.38.35Z"/></svg>
-</a>
+    <!-- FAB placed in the grid using align-self/justify-self (no absolute bottom) -->
+    <button class="fab" id="fab" aria-label="New submission">+</button>
+  </div>
 
-<script>
-    let isAdmin = false;
-    // EDIT THIS LIST TO ADD PERMANENT MEMBERS
-    let profiles = [
-        { name: "Tanya, 24", loc: "Harare", bio: "Loves travel and deep conversations.", img: "https://images.unsplash.com/photo-1531123897727-8f129e16fd3c?w=400", verified: true }
-    ];
+  <!-- Modal -->
+  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal" role="document">
+      <div class="modal-left">
+        <div id="modalImage" class="img" style="background-image:url('')"></div>
+      </div>
+      <div class="modal-right">
+        <h2 id="modalTitle" class="modal-title">Name, Age</h2>
+        <p id="modalMeta" class="modal-meta">Seeking: ...</p>
+        <div id="modalNationality" class="submeta">Nationality: ...</div>
+        <div id="modalBio" class="modal-bio">Bio goes here</div>
+        <div style="margin-top:auto;display:flex;gap:8px">
+          <a id="modalWhats" href="#" style="background:#25D366;padding:10px 12px;border-radius:8px;color:#fff;text-decoration:none">WhatsApp</a>
+          <a id="modalEmail" href="#" style="background:linear-gradient(90deg,#fff2d1,#f0c85a);padding:10px 12px;border-radius:8px;color:#000;text-decoration:none">Email</a>
+          <button id="modalClose" style="background:rgba(255,255,255,0.06);padding:10px 12px;border-radius:8px;color:#fff;border:none">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    const grid = document.getElementById('grid');
-    const fileInput = document.getElementById('fileInput');
-    const preview = document.getElementById('preview-container');
+  <script>
+    (function(){
+      // Demo data now includes nationality
+      const demo = [
+        {id:'p1',name:'Julian',age:27,type:'Long-term',tags:'Intellectual',nationality:'Zimbabwe',bio:'Julian loves books and long conversations.',photo:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80&auto=format&fit=crop'},
+        {id:'p2',name:'Elena',age:25,type:'Casual',tags:'Creative,Adventurous',nationality:'Spain',bio:'Elena is a photographer who loves road trips.',photo:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=1200&q=80&auto=format&fit=crop'},
+        {id:'p3',name:'Marcus',age:31,type:'Friendship',tags:'Fitness,Foodie',nationality:'Kenya',bio:'Marcus enjoys cooking and running.',photo:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=1200&q=80&auto=format&fit=crop'}
+      ];
 
-    function adminLogin() {
-        const pass = prompt("Admin Password:");
-        if (pass === "ZinyekaG@2") {
-            isAdmin = true;
-            document.getElementById('admin-panel').style.display = "block";
-            document.getElementById('submitBtn').innerText = "Add to Grid";
-            renderGrid();
-        }
-    }
+      const grid = document.getElementById('grid');
+      demo.forEach(p => {
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.tabIndex = 0;
+        el.dataset.id = p.id;
+        el.dataset.name = p.name;
+        el.dataset.age = p.age;
+        el.dataset.type = p.type;
+        el.dataset.tags = p.tags;
+        el.dataset.bio = p.bio;
+        el.dataset.photo = p.photo;
+        el.dataset.nationality = p.nationality;
+        el.innerHTML = `
+          <div class="media"><img alt="${p.name}" src="${p.photo}"></div>
+          <div class="body">
+            <div class="name">${p.name}, ${p.age}</div>
+            <div class="meta">Seeking: ${p.type}</div>
+            <div class="submeta">Nationality: ${p.nationality}</div>
+          </div>`;
+        el.addEventListener('click', () => openModal(el));
+        el.addEventListener('keydown', (e) => { if(e.key==='Enter' || e.key===' ') openModal(el); });
+        grid.appendChild(el);
+      });
 
-    function renderGrid() {
-        grid.innerHTML = "";
-        profiles.forEach((p, index) => {
-            grid.innerHTML += `
-                <div class="card">
-                    <div class="media">
-                        <img src="${p.img}">
-                        ${p.verified ? '<div class="verify-badge">✓</div>' : ''}
-                    </div>
-                    <div class="body">
-                        <p class="name">${p.name}</p>
-                        <p class="meta-text">📍 ${p.loc}</p>
-                        <p style="font-size:0.8rem; height:40px; overflow:hidden;">${p.bio}</p>
-                        <div class="admin-only" style="display: ${isAdmin ? 'block' : 'none'}">
-                            <button onclick="deleteProfile(${index})" style="background:#ff4444; color:#fff; border:none; padding:5px 10px; border-radius:5px; cursor:pointer">Remove</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-    }
+      // Modal elements
+      const modalBackdrop = document.getElementById('modalBackdrop');
+      const modalImage = document.getElementById('modalImage');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalMeta = document.getElementById('modalMeta');
+      const modalBio = document.getElementById('modalBio');
+      const modalNationality = document.getElementById('modalNationality');
+      const modalWhats = document.getElementById('modalWhats');
+      const modalEmail = document.getElementById('modalEmail');
+      const modalClose = document.getElementById('modalClose');
 
-    window.deleteProfile = (i) => { profiles.splice(i, 1); renderGrid(); };
+      function openModal(card){
+        const name = card.dataset.name;
+        const age = card.dataset.age;
+        const type = card.dataset.type;
+        const bio = card.dataset.bio;
+        const photo = card.dataset.photo;
+        const nationality = card.dataset.nationality || '—';
+        modalTitle.textContent = `${name}, ${age}`;
+        modalMeta.textContent = `Seeking: ${type}`;
+        modalNationality.textContent = `Nationality: ${nationality}`;
+        modalBio.textContent = bio;
+        modalImage.style.backgroundImage = `url('${photo}')`;
+        modalWhats.href = `https://wa.me/263785008695?text=Hi%20${encodeURIComponent(name)}%2C%20I%20saw%20your%20profile%20on%20Date%20Your%20Fav.`;
+        modalEmail.href = `mailto:gmz200t@gmail.com?subject=${encodeURIComponent('Interest in ' + name)}&body=${encodeURIComponent('Hi ' + name + ',%0D%0A%0D%0AI saw your profile on Date Your Fav and would like to connect.')}`;
+        modalBackdrop.style.display = 'flex';
+        modalBackdrop.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+      }
 
-    let currentBase64 = "";
-    fileInput.onchange = function(e) {
+      function closeModal(){ modalBackdrop.style.display = 'none'; modalBackdrop.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
+      modalClose.addEventListener('click', closeModal);
+      modalBackdrop.addEventListener('click', (e) => { if(e.target === modalBackdrop) closeModal(); });
+      document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+
+      // Image preview for submission form
+      const photoInput = document.getElementById('photo');
+      const preview = document.getElementById('preview');
+      photoInput.addEventListener('change', function(){
+        const file = this.files && this.files[0];
+        if(!file){ preview.textContent = 'No image selected'; preview.style.backgroundImage = ''; return; }
+        if(!file.type.startsWith('image/')){ preview.textContent = 'Selected file is not an image'; return; }
         const reader = new FileReader();
-        reader.onload = function() {
-            preview.style.backgroundImage = `url(${reader.result})`;
-            currentBase64 = reader.result;
-            document.getElementById('preview-text').style.display = "none";
+        reader.onload = function(e){ preview.style.backgroundImage = `url('${e.target.result}')`; preview.textContent = ''; };
+        reader.readAsDataURL(file);
+      });
+
+      // Form submission (demo: posts to /api/upload-profile if available)
+      const form = document.getElementById('applyForm');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fd = new FormData(form);
+        if(!fd.get('post_on_site') && !document.getElementById('consent').checked){
+          alert('Please confirm consent'); return;
         }
-        reader.readAsDataURL(e.target.files[0]);
-    };
+        try{
+          const res = await fetch('/api/upload-profile', { method:'POST', body:fd });
+          if(res.ok){ alert('Submitted for review'); form.reset(); preview.style.backgroundImage=''; preview.textContent='No image selected'; }
+          else { const json = await res.json(); alert(json.error || 'Submission failed'); }
+        } catch(err){ console.warn(err); alert('Network error or backend not available'); }
+      });
 
-    document.getElementById('applyForm').onsubmit = function(e) {
-        if (isAdmin) {
-            e.preventDefault();
-            const newP = {
-                name: document.getElementById('reg-name').value,
-                loc: document.getElementById('reg-loc').value,
-                bio: document.getElementById('reg-bio').value,
-                img: currentBase64 || "https://via.placeholder.com/300",
-                verified: true
-            };
-            profiles.push(newP);
-            renderGrid();
-            this.reset();
-            preview.style.backgroundImage = "";
-            alert("Added! Remember to copy code and save to GitHub.");
-        }
-    };
+      // FAB scroll to form
+      document.getElementById('fab').addEventListener('click', () => {
+        const el = document.getElementById('applyForm');
+        el.scrollIntoView({behavior:'smooth', block:'center'});
+        el.querySelector('input,textarea,select').focus();
+      });
 
-    // Advanced: Allows you to copy the updated profile list to paste into your GitHub code
-    function copyCurrentCode() {
-        const code = JSON.stringify(profiles, null, 2);
-        const fullLog = "Updated profiles list:\n\n" + code;
-        console.log(fullLog);
-        navigator.clipboard.writeText(fullLog);
-        alert("Profile data copied to clipboard! Paste this into the 'let profiles' section of your GitHub code to save permanently.");
-    }
-
-    renderGrid();
-</script>
-
+      // Service worker registration (optional)
+      if('serviceWorker' in navigator){
+        window.addEventListener('load', () => navigator.serviceWorker?.register('/service-worker.js').catch(()=>{}));
+      }
+    })();
+  </script>
 </body>
 </html>
