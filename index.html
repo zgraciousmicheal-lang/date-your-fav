@@ -7,217 +7,165 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         :root{
-            --gold: #d4af37; 
-            --dark: #0a0e14; 
-            --light: #eef2f6; 
-            --accent: #161b22;
-            --muted: #8b949e;
-            --max-width: 1100px;
+            --gold: #d4af37; --dark: #0a0e14; --light: #eef2f6; 
+            --accent: #161b22; --muted: #8b949e; --whatsapp: #25d366;
         }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--light);
-            margin: 0;
-            line-height: 1.6;
-        }
-        .app {
-            width:100%;
-            max-width:var(--max-width);
-            min-height:100vh;
-            margin:0 auto;
-            display:grid;
-            grid-template-rows: auto 1fr auto;
-            background: rgba(255,255,255,0.01);
-        }
-        .topbar{
-            display:flex;
-            align-items:center;
-            gap:12px;
-            padding:20px;
-            border-bottom:1px solid rgba(255,255,255,0.05);
-        }
-        .logo{
-            width:44px;
-            height:44px;
-            border-radius:10px;
-            background: var(--gold);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color: #000;
-            font-weight:800;
-            font-family:"Playfair Display";
-        }
-        .title{
-            font-family:"Playfair Display";
-            color:var(--gold);
-            font-size:1.2rem;
-            font-weight:700;
-        }
-        .content {
-            display:grid;
-            grid-template-columns: 1fr 380px;
-            gap:20px;
-            padding:20px;
-        }
-        @media (max-width:900px){
-            .content { grid-template-columns: 1fr; }
-        }
-        .grid {
-            display:grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap:15px;
-        }
-        .card {
-            background: var(--accent);
-            border-radius:16px;
-            overflow:hidden;
-            border:1px solid rgba(255,255,255,0.05);
-            transition: 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
-        }
-        .media{
-            height:220px;
-            background:#000;
-        }
-        .media img{
-            width:100%; height:100%; object-fit:cover;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--dark); color: var(--light); margin: 0; }
+        .app { width:100%; max-width:1100px; margin:0 auto; display:grid; grid-template-rows: auto 1fr auto; min-height:100vh; }
+        
+        /* Header */
+        .topbar{ display:flex; align-items:center; gap:12px; padding:20px; border-bottom:1px solid rgba(255,255,255,0.05); }
+        .logo{ width:44px; height:44px; border-radius:10px; background: var(--gold); display:flex; align-items:center; justify-content:center; color: #000; font-weight:800; cursor: pointer; }
+        
+        /* Layout */
+        .content { display:grid; grid-template-columns: 1fr 380px; gap:20px; padding:20px; }
+        @media (max-width:900px){ .content { grid-template-columns: 1fr; } }
+
+        /* Profiles */
+        .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:15px; }
+        .card { background: var(--accent); border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,0.05); position: relative; }
+        .media{ height:200px; background:#000; }
+        .media img{ width:100%; height:100%; object-fit:cover; }
         .body{ padding:15px; }
-        .name{
-            font-family:"Playfair Display";
-            color:var(--gold);
-            font-size:1.1rem;
-            margin:0;
-        }
-        .meta{ color:var(--muted); font-size:0.85rem; margin-top:4px; }
-        .panel{
-            background: rgba(255,255,255,0.03);
-            border-radius:20px;
-            padding:20px;
-            border:1px solid rgba(255,255,255,0.05);
-            position: sticky; top: 20px;
-        }
-        input, select, textarea {
-            width:100%; padding:12px; margin-top:10px; border-radius:10px;
-            border:1px solid rgba(255,255,255,0.1); background:#0a0e14; color:#fff;
-        }
-        .btn {
-            width:100%; padding:14px; margin-top:15px; border-radius:12px;
-            background: var(--gold); border:none; color:#000;
-            font-weight:800; cursor:pointer; font-size:1rem;
-        }
-        #preview-container {
-            margin-top: 10px; width: 100%; height: 150px; border-radius: 10px;
-            border: 2px dashed rgba(255,255,255,0.1); display: flex;
-            align-items: center; justify-content: center; background-size: cover; background-position: center;
-        }
-        .status-msg {
-            text-align: center; margin-top: 10px; font-weight: 600; padding: 10px; border-radius: 8px; display: none;
-        }
+        .name{ color:var(--gold); font-family:"Playfair Display"; font-size:1.1rem; margin:0; }
+        
+        /* Admin Tools */
+        .admin-only { display: none; margin-top: 10px; border-top: 1px solid #333; padding-top: 10px; }
+        .btn-del { background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; }
+
+        /* Form */
+        .panel{ background: rgba(255,255,255,0.03); border-radius:20px; padding:20px; border:1px solid rgba(255,255,255,0.05); position: sticky; top: 20px; }
+        input, select, textarea { width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:#0a0e14; color:#fff; box-sizing: border-box; }
+        .btn { width:100%; padding:14px; margin-top:15px; border-radius:12px; background: var(--gold); border:none; color:#000; font-weight:800; cursor:pointer; }
+
+        /* Floating WA */
+        .wa-float { position: fixed; bottom: 30px; right: 30px; background: var(--whatsapp); color: white; width: 60px; height: 60px; border-radius: 50px; display: flex; align-items: center; justify-content: center; text-decoration: none; z-index: 100; }
+        
+        #preview-container { margin-top: 10px; width: 100%; height: 150px; border-radius: 10px; border: 2px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; }
     </style>
 </head>
 <body>
-    <div class="app">
-        <header class="topbar">
-            <div class="logo">DYF</div>
-            <div class="title">Date Your Fav</div>
-        </header>
-        <main class="content">
-            <section class="left">
-                <h2 style="color:var(--gold); margin-top:0; font-family:'Playfair Display'">Featured in Zimbabwe</h2>
-                <div id="grid" class="grid">
-                    <div class="card">
-                        <div class="media"><img src="https://images.unsplash.com/photo-1531123897727-8f129e16fd3c?w=400"></div>
-                        <div class="body">
-                            <p class="name">Tanya, 24</p>
-                            <p class="meta">Harare • Long-term</p>
+
+<div class="app">
+    <header class="topbar">
+        <div class="logo" onclick="adminLogin()">DYF</div>
+        <div style="color:var(--gold); font-weight:700">Date Your Fav — Zimbabwe</div>
+    </header>
+
+    <main class="content">
+        <section>
+            <h2 style="font-family:'Playfair Display'; color:var(--gold)">Members List</h2>
+            <div id="grid" class="grid">
+                </div>
+        </section>
+
+        <aside>
+            <div class="panel">
+                <h3 id="form-title" style="color:var(--gold); margin:0">Apply to Join</h3>
+                <form id="applyForm" action="https://formspree.io/f/xbdajewj" method="POST">
+                    <input name="Full Name" id="reg-name" placeholder="Name & Age" required>
+                    <input name="Location" id="reg-loc" placeholder="City" required>
+                    <div id="preview-container"><span id="preview-text">Photo Preview</span></div>
+                    <input type="file" id="fileInput" accept="image/*">
+                    <textarea name="Bio" id="reg-bio" placeholder="Bio..." required></textarea>
+                    
+                    <button type="submit" class="btn" id="submitBtn">Submit Application</button>
+                    <p id="admin-hint" style="display:none; font-size:0.7rem; color:var(--gold); text-align:center">Admin Mode Active: Button will add to grid locally.</p>
+                </form>
+            </div>
+        </aside>
+    </main>
+
+    <footer style="text-align:center; padding:40px; color:var(--muted); font-size:0.8rem">
+        &copy; 2024 Date Your Fav Zimbabwe | <a href="mailto:gmz200t@gmail.com" style="color:var(--gold)">gmz200t@gmail.com</a>
+    </footer>
+</div>
+
+<a href="https://wa.me/263775008695" class="wa-float" target="_blank">WA</a>
+
+<script>
+    let isAdmin = false;
+    let profiles = [
+        { name: "Tanya, 24", loc: "Harare", bio: "Loves travel", img: "https://images.unsplash.com/photo-1531123897727-8f129e16fd3c?w=400" }
+    ];
+
+    const grid = document.getElementById('grid');
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview-container');
+
+    // 1. Admin Login Function
+    function adminLogin() {
+        const pass = prompt("Enter Admin Password:");
+        if (pass === "ZinyekaG@2") {
+            isAdmin = true;
+            document.getElementById('admin-hint').style.display = "block";
+            document.getElementById('form-title').innerText = "Admin: Add Member";
+            document.getElementById('submitBtn').innerText = "Post to Grid Now";
+            renderGrid();
+            alert("Admin Access Granted!");
+        } else {
+            alert("Wrong Password.");
+        }
+    }
+
+    // 2. Render the Grid
+    function renderGrid() {
+        grid.innerHTML = "";
+        profiles.forEach((p, index) => {
+            grid.innerHTML += `
+                <div class="card">
+                    <div class="media"><img src="${p.img}"></div>
+                    <div class="body">
+                        <p class="name">${p.name}</p>
+                        <p style="font-size:0.8rem; color:var(--muted)">${p.loc}</p>
+                        <div class="admin-only" style="display: ${isAdmin ? 'block' : 'none'}">
+                            <button class="btn-del" onclick="deleteProfile(${index})">Delete</button>
                         </div>
                     </div>
                 </div>
-            </section>
-            <aside class="right">
-                <div class="panel">
-                    <h3 style="margin:0; color:var(--gold)">Apply for Feature</h3>
-                    <p style="color:var(--muted); font-size:0.85rem">Join the elite dating circle in Zimbabwe.</p>
-                    <form id="applyForm" action="https://formspree.io/f/xbdajewj" method="POST" enctype="multipart/form-data">
-                        <input name="Full Name" placeholder="Full Name" required>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
-                            <input name="Age" type="number" placeholder="Age" required>
-                            <select name="Gender" required>
-                                <option value="">Gender</option>
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-                        </div>
-                        <input name="Email" type="email" placeholder="Email Address" required>
-                        <select name="Looking For" required>
-                            <option value="">Looking For...</option>
-                            <option>Relationship</option>
-                            <option>Casual</option>
-                            <option>Friends</option>
-                        </select>
-                        <div id="preview-container">
-                            <span id="preview-text" style="color:var(--muted); font-size:0.8rem">Photo Preview</span>
-                        </div>
-                        <input type="file" name="Image" id="fileInput" accept="image/*" required>
-                        <textarea name="Bio" placeholder="Tell us about yourself..." rows="3" required></textarea>
-                        <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 10px;">
-                            <input type="checkbox" name="consent" required>
-                            I consent to public profile listing
-                        </label>
-                        <button type="submit" class="btn" id="submitBtn">Send Application</button>
-                        <div id="status" class="status-msg"></div>
-                    </form>
-                </div>
-            </aside>
-        </main>
-    </div>
+            `;
+        });
+    }
 
-    <script>
-        // Image Preview Logic
-        document.getElementById('fileInput').onchange = function(e) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const container = document.getElementById('preview-container');
-                container.style.backgroundImage = `url(${reader.result})`;
-                document.getElementById('preview-text').style.display = 'none';
-            }
-            reader.readAsDataURL(e.target.files[0]);
-        };
+    // 3. Delete Profile
+    window.deleteProfile = (index) => {
+        profiles.splice(index, 1);
+        renderGrid();
+    };
 
-        // Form Submission Logic
-        const form = document.getElementById("applyForm");
-        const status = document.getElementById("status");
-        const btn = document.getElementById("submitBtn");
+    // 4. Image Preview
+    let currentBase64 = "";
+    fileInput.onchange = function(e) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            preview.style.backgroundImage = `url(${reader.result})`;
+            currentBase64 = reader.result;
+            document.getElementById('preview-text').style.display = "none";
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    };
 
-        form.onsubmit = async (e) => {
-            e.preventDefault();
-            btn.disabled = true;
-            btn.innerText = "Processing...";
-            const formData = new FormData(form);
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-            if (response.ok) {
-                status.innerText = "Application Sent Successfully!";
-                status.style.display = "block";
-                status.style.color = "#d4af37";
-                form.reset();
-            } else {
-                status.innerText = "Error. Please check email verification.";
-                status.style.display = "block";
-                status.style.color = "#ff4444";
-            }
-            btn.disabled = false;
-            btn.innerText = "Send Application";
-        };
-    </script>
+    // 5. Handle Form (Submission vs Admin Add)
+    document.getElementById('applyForm').onsubmit = async function(e) {
+        if (isAdmin) {
+            e.preventDefault(); // Don't send email if admin is just adding someone
+            const newProfile = {
+                name: document.getElementById('reg-name').value,
+                loc: document.getElementById('reg-loc').value,
+                bio: document.getElementById('reg-bio').value,
+                img: currentBase64 || "https://via.placeholder.com/200"
+            };
+            profiles.push(newProfile);
+            renderGrid();
+            this.reset();
+            preview.style.backgroundImage = "";
+            alert("Profile added to grid!");
+        } 
+        // If not admin, it follows the Formspree action automatically
+    };
+
+    renderGrid();
+</script>
+
 </body>
 </html>
