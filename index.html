@@ -1,225 +1,223 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Date Your Fav — Zimbabwe</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --accent1:#ff7a59; --accent2:#ffd166; --bg1:#0f1724; --muted:#9aa4b2;
-      --glass:rgba(255,255,255,0.03); --card:rgba(255,255,255,0.02);
-      --radius:18px; --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); --max-width:980px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui;color:#eef2f6;background:#070708;-webkit-font-smoothing:antialiased;}
-    
-    .app { 
-      width:100%; max-width:var(--max-width); min-height:100vh; margin:0 auto; 
-      display:grid; grid-template-rows: auto 1fr auto; 
-      background: rgba(255,255,255,0.01); 
-    }
-
-    .topbar{ display:flex; align-items:center; gap:12px; padding:20px; border-bottom:1px solid rgba(255,255,255,0.05); }
-    .logo{ width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg,var(--accent1),var(--accent2)); display:flex; align-items:center; justify-content:center; color:#08101a; font-weight:800; font-family:"Playfair Display"; }
-    .title{ font-family:"Playfair Display"; color:var(--accent2); font-size:1.2rem; font-weight:700; }
-
-    .content { display:grid; grid-template-columns: 1fr 380px; gap:20px; padding:20px; }
-    @media (max-width:900px){ .content { grid-template-columns: 1fr; } }
-
-    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:15px; }
-    .card { background: var(--card); border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,0.05); cursor:pointer; transition: 0.3s ease; }
-    .card:hover { transform: translateY(-5px); border-color: var(--accent1); }
-    .media{ height:180px; background:#1a222e; position:relative; }
-    .media img{ width:100%; height:100%; object-fit:cover; }
-    
-    .body{ padding:12px; }
-    .name{ font-family:"Playfair Display"; color:var(--accent2); font-size:1.1rem; margin:0; }
-    .meta{ color:var(--muted); font-size:0.85rem; margin-top:4px; }
-
-    .panel{ background: rgba(255,255,255,0.03); border-radius:20px; padding:20px; border:1px solid rgba(255,255,255,0.05); position: sticky; top: 20px; }
-    input, select, textarea { 
-      width:100%; padding:12px; margin-top:10px; border-radius:10px; 
-      border:1px solid rgba(255,255,255,0.1); background:#161b22; color:#fff; font-size:0.9rem;
-    }
-    .btn { 
-      width:100%; padding:14px; margin-top:15px; border-radius:12px; 
-      background:linear-gradient(90deg,var(--accent1),var(--accent2)); 
-      border:none; color:#08101a; font-weight:800; cursor:pointer; font-size:1rem;
-    }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    #preview-container {
-      margin-top: 10px; width: 100%; height: 120px; border-radius: 10px;
-      border: 2px dashed rgba(255,255,255,0.1); display: flex; align-items: center;
-      justify-content: center; overflow: hidden; background-size: cover; background-position: center;
-    }
-
-    /* Modal Styles */
-    .modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,0.9); display:none; align-items:center; justify-content:center; z-index:1000; padding:15px; }
-    .modal{ width:100%; max-width:850px; background:#0f1724; border-radius:24px; display:flex; overflow:hidden; border:1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
-    .modal-left{ flex:1; min-width:300px; background-size:cover; background-position:center; min-height:400px; }
-    .modal-right{ flex:1.2; min-width:300px; padding:30px; display:flex; flex-direction:column; gap:15px; }
-    
-    .status-msg { text-align: center; margin-top: 10px; font-weight: 600; padding: 10px; border-radius: 8px; display: none; }
-  </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>Date Your Fav — Zimbabwe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --gold: #d4af37; 
+            --dark: #0a0e14; 
+            --light: #eef2f6; 
+            --accent: #161b22;
+            --muted: #8b949e;
+            --max-width: 1100px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            margin: 0;
+            line-height: 1.6;
+        }
+        .app {
+            width:100%;
+            max-width:var(--max-width);
+            min-height:100vh;
+            margin:0 auto;
+            display:grid;
+            grid-template-rows: auto 1fr auto;
+            background: rgba(255,255,255,0.01);
+        }
+        .topbar{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:20px;
+            border-bottom:1px solid rgba(255,255,255,0.05);
+        }
+        .logo{
+            width:44px;
+            height:44px;
+            border-radius:10px;
+            background: var(--gold);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color: #000;
+            font-weight:800;
+            font-family:"Playfair Display";
+        }
+        .title{
+            font-family:"Playfair Display";
+            color:var(--gold);
+            font-size:1.2rem;
+            font-weight:700;
+        }
+        .content {
+            display:grid;
+            grid-template-columns: 1fr 380px;
+            gap:20px;
+            padding:20px;
+        }
+        @media (max-width:900px){
+            .content { grid-template-columns: 1fr; }
+        }
+        .grid {
+            display:grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap:15px;
+        }
+        .card {
+            background: var(--accent);
+            border-radius:16px;
+            overflow:hidden;
+            border:1px solid rgba(255,255,255,0.05);
+            transition: 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+        .media{
+            height:220px;
+            background:#000;
+        }
+        .media img{
+            width:100%; height:100%; object-fit:cover;
+        }
+        .body{ padding:15px; }
+        .name{
+            font-family:"Playfair Display";
+            color:var(--gold);
+            font-size:1.1rem;
+            margin:0;
+        }
+        .meta{ color:var(--muted); font-size:0.85rem; margin-top:4px; }
+        .panel{
+            background: rgba(255,255,255,0.03);
+            border-radius:20px;
+            padding:20px;
+            border:1px solid rgba(255,255,255,0.05);
+            position: sticky; top: 20px;
+        }
+        input, select, textarea {
+            width:100%; padding:12px; margin-top:10px; border-radius:10px;
+            border:1px solid rgba(255,255,255,0.1); background:#0a0e14; color:#fff;
+        }
+        .btn {
+            width:100%; padding:14px; margin-top:15px; border-radius:12px;
+            background: var(--gold); border:none; color:#000;
+            font-weight:800; cursor:pointer; font-size:1rem;
+        }
+        #preview-container {
+            margin-top: 10px; width: 100%; height: 150px; border-radius: 10px;
+            border: 2px dashed rgba(255,255,255,0.1); display: flex;
+            align-items: center; justify-content: center; background-size: cover; background-position: center;
+        }
+        .status-msg {
+            text-align: center; margin-top: 10px; font-weight: 600; padding: 10px; border-radius: 8px; display: none;
+        }
+    </style>
 </head>
 <body>
-
-  <div class="app">
-    <header class="topbar">
-      <div class="logo">DYF</div>
-      <div class="title">Date Your Fav</div>
-    </header>
-
-    <main class="content">
-      <section class="left">
-        <h2 style="color:var(--accent2); margin-top:0; font-family:'Playfair Display'">Featured in Zimbabwe</h2>
-        <div id="grid" class="grid">
-          </div>
-      </section>
-
-      <aside class="right">
-        <div class="panel">
-          <h3 style="margin:0; color:var(--accent2)">Apply for Feature</h3>
-          <p style="color:var(--muted); font-size:0.85rem">Submit your profile to be featured on the main grid.</p>
-          
-          <form id="applyForm" action="https://formspree.io/f/xbdajewj" method="POST" enctype="multipart/form-data">
-            <input name="Full Name" placeholder="Full Name" required>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
-              <input name="Age" type="number" placeholder="Age" required>
-              <select name="Gender" required>
-                <option value="">Gender</option>
-                <option>Male</option>
-                <option>Female</option>
-              </select>
-            </div>
-            <input name="Nationality" placeholder="Nationality (e.g. Zimbabwe)" required>
-            <select name="Looking For" required>
-              <option value="">Looking For...</option>
-              <option>Long-term Relationship</option>
-              <option>Casual Dating</option>
-              <option>New Friends</option>
-            </select>
-            
-            <div id="preview-container">
-              <span id="preview-text" style="color:var(--muted); font-size:0.8rem">Photo Preview</span>
-            </div>
-            <input type="file" name="Image" id="fileInput" accept="image/*" required>
-            
-            <textarea name="Bio" placeholder="Short Bio (Hobbies, interests...)" rows="3" required></textarea>
-            
-            <button type="submit" class="btn" id="submitBtn">Send Application</button>
-            <div id="status" class="status-msg"></div>
-          </form>
-        </div>
-      </aside>
-    </main>
-  </div>
-
-  <div id="modalBackdrop" class="modal-backdrop" onclick="if(event.target === this) closeModal()">
-    <div class="modal">
-      <div id="modalImage" class="modal-left"></div>
-      <div class="modal-right">
-        <h1 id="modalTitle" style="margin:0; color:var(--accent2); font-family:'Playfair Display'"></h1>
-        <p id="modalMeta" style="color:var(--muted); font-size:1.1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px"></p>
-        <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px">
-          <p id="modalBio" style="line-height:1.6; margin:0"></p>
-        </div>
-        <div style="margin-top:auto; display:flex; gap:10px">
-           <button onclick="closeModal()" style="background:#fff; color:#000; border:none; padding:12px; border-radius:10px; cursor:pointer; flex:1; font-weight:700">Close Profile</button>
-        </div>
-      </div>
+    <div class="app">
+        <header class="topbar">
+            <div class="logo">DYF</div>
+            <div class="title">Date Your Fav</div>
+        </header>
+        <main class="content">
+            <section class="left">
+                <h2 style="color:var(--gold); margin-top:0; font-family:'Playfair Display'">Featured in Zimbabwe</h2>
+                <div id="grid" class="grid">
+                    <div class="card">
+                        <div class="media"><img src="https://images.unsplash.com/photo-1531123897727-8f129e16fd3c?w=400"></div>
+                        <div class="body">
+                            <p class="name">Tanya, 24</p>
+                            <p class="meta">Harare • Long-term</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <aside class="right">
+                <div class="panel">
+                    <h3 style="margin:0; color:var(--gold)">Apply for Feature</h3>
+                    <p style="color:var(--muted); font-size:0.85rem">Join the elite dating circle in Zimbabwe.</p>
+                    <form id="applyForm" action="https://formspree.io/f/xbdajewj" method="POST" enctype="multipart/form-data">
+                        <input name="Full Name" placeholder="Full Name" required>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+                            <input name="Age" type="number" placeholder="Age" required>
+                            <select name="Gender" required>
+                                <option value="">Gender</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                        <input name="Email" type="email" placeholder="Email Address" required>
+                        <select name="Looking For" required>
+                            <option value="">Looking For...</option>
+                            <option>Relationship</option>
+                            <option>Casual</option>
+                            <option>Friends</option>
+                        </select>
+                        <div id="preview-container">
+                            <span id="preview-text" style="color:var(--muted); font-size:0.8rem">Photo Preview</span>
+                        </div>
+                        <input type="file" name="Image" id="fileInput" accept="image/*" required>
+                        <textarea name="Bio" placeholder="Tell us about yourself..." rows="3" required></textarea>
+                        <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 10px;">
+                            <input type="checkbox" name="consent" required>
+                            I consent to public profile listing
+                        </label>
+                        <button type="submit" class="btn" id="submitBtn">Send Application</button>
+                        <div id="status" class="status-msg"></div>
+                    </form>
+                </div>
+            </aside>
+        </main>
     </div>
-  </div>
 
-  <script>
-    // 1. Featured Data (Add new people here manually)
-    const featuredProfiles = [
-      {name:'Julian', age:27, type:'Long-term', nation:'Zimbabwe', bio:'Avid reader and tech enthusiast. Looking for someone to share deep conversations with over coffee.', photo:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500'},
-      {name:'Elena', age:25, type:'Casual', nation:'Zimbabwe', bio:'Photography is my passion. Always on a road trip looking for the best sunset spots.', photo:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500'},
-      {name:'Marcus', age:31, type:'Friendship', nation:'Zimbabwe', bio:'Fitness coach and foodie. I believe in living life to the fullest every single day.', photo:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500'}
-    ];
+    <script>
+        // Image Preview Logic
+        document.getElementById('fileInput').onchange = function(e) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const container = document.getElementById('preview-container');
+                container.style.backgroundImage = `url(${reader.result})`;
+                document.getElementById('preview-text').style.display = 'none';
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        };
 
-    // 2. Render Cards
-    const grid = document.getElementById('grid');
-    featuredProfiles.forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <div class="media"><img src="${p.photo}" loading="lazy"></div>
-        <div class="body">
-          <p class="name">${p.name}, ${p.age}</p>
-          <p class="meta">${p.type} • ${p.nation}</p>
-        </div>`;
-      card.onclick = () => openModal(p);
-      grid.appendChild(card);
-    });
+        // Form Submission Logic
+        const form = document.getElementById("applyForm");
+        const status = document.getElementById("status");
+        const btn = document.getElementById("submitBtn");
 
-    // 3. Modal Logic
-    function openModal(p) {
-      document.getElementById('modalTitle').innerText = `${p.name}, ${p.age}`;
-      document.getElementById('modalMeta').innerText = `${p.type} • From ${p.nation}`;
-      document.getElementById('modalBio').innerText = p.bio;
-      document.getElementById('modalImage').style.backgroundImage = `url('${p.photo}')`;
-      document.getElementById('modalBackdrop').style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      document.getElementById('modalBackdrop').style.display = 'none';
-      document.body.style.overflow = 'auto';
-    }
-
-    // 4. Image Preview Logic
-    document.getElementById('fileInput').onchange = function(e) {
-      const reader = new FileReader();
-      reader.onload = function() {
-        const container = document.getElementById('preview-container');
-        container.style.backgroundImage = `url(${reader.result})`;
-        document.getElementById('preview-text').style.display = 'none';
-      }
-      reader.readAsDataURL(e.target.files[0]);
-    };
-
-    // 5. Form Handling (Formspree AJAX)
-    const form = document.getElementById("applyForm");
-    const status = document.getElementById("status");
-    const btn = document.getElementById("submitBtn");
-
-    form.onsubmit = async (e) => {
-      e.preventDefault();
-      btn.disabled = true;
-      btn.innerText = "Processing...";
-      
-      const formData = new FormData(form);
-      try {
-        const response = await fetch(form.action, {
-          method: 'POST',
-          body: formData,
-          headers: { 'Accept': 'application/json' }
-        });
-
-        if (response.ok) {
-          status.innerText = "Success! Application sent to the Creator.";
-          status.style.display = "block";
-          status.style.background = "rgba(40, 167, 69, 0.2)";
-          status.style.color = "#28a745";
-          form.reset();
-          document.getElementById('preview-container').style.backgroundImage = "none";
-          document.getElementById('preview-text').style.display = "block";
-        } else {
-          throw new Error();
-        }
-      } catch (error) {
-        status.innerText = "Error. Please try again or use WhatsApp.";
-        status.style.display = "block";
-        status.style.background = "rgba(220, 53, 69, 0.2)";
-        status.style.color = "#dc3545";
-      }
-      btn.disabled = false;
-      btn.innerText = "Send Application";
-    };
-  </script>
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.innerText = "Processing...";
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+            if (response.ok) {
+                status.innerText = "Application Sent Successfully!";
+                status.style.display = "block";
+                status.style.color = "#d4af37";
+                form.reset();
+            } else {
+                status.innerText = "Error. Please check email verification.";
+                status.style.display = "block";
+                status.style.color = "#ff4444";
+            }
+            btn.disabled = false;
+            btn.innerText = "Send Application";
+        };
+    </script>
 </body>
 </html>
